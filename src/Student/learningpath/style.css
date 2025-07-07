@@ -1,0 +1,9 @@
+.top-div{
+    max-width:fit-content;
+    max-height: fit-content;
+}
+
+.inner-div{
+    width: 60vw;
+    height: 60vh;
+}
