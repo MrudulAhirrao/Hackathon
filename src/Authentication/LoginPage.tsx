@@ -2,6 +2,7 @@ import { GalleryVerticalEnd } from "lucide-react";
 
 import { LoginForm } from "@/Authentication/Componentes/Loginfrom";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+   import { Toaster, toast } from "sonner";
 
 export default function LoginPage() {
   return (
@@ -28,6 +29,7 @@ export default function LoginPage() {
           autoplay
         />
       </div>
+      <Toaster/>
     </div>
   );
 }
