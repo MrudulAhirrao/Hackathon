@@ -12,6 +12,7 @@ import apiCall from "@/lib/apicall"
 import MarkdownPreview from '@uiw/react-markdown-preview'
 import "@/Student/learningpath/style.css"
 import Cookies from "js-cookie"
+import { convertToMarkdown } from "@/lib/utils"
 
 // Extend the Window interface to include SpeechRecognition types
 declare global {
@@ -27,9 +28,6 @@ export default function LearningPath() {
   const [loading, setLoading] = useState(false)
   const recognitionRef = useRef<any>(null)
 
-  const convertToMarkdown = (raw: string): string=> {
-  return raw.replace(/\n\s+/g, '\n').replace(/^\s+|\s+$/g, '') || '';
-}
 
 
 

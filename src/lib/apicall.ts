@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 
 export default async function apiCall(
   url: string,
@@ -9,6 +10,7 @@ export default async function apiCall(
     method,
     headers: {
       'Content-Type': 'application/json',
+      'X-Authorization': Cookies.get("token") || "",
       ...headers,
     },
   };
