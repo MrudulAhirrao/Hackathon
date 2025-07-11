@@ -41,6 +41,11 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { StudentSidebar } from "@/Student/components/student-sidebar";
+import McqComponent from "./McqComponent";
+import { type McqData, type Question } from "@/types/mcq.type";
+import apiCall from "@/lib/apicall"
+import constant from "@/constant/contstant.json"
+import { toast } from "sonner"
 
 export default function McqGenerator() {
   const [fileList, setFileList] = useState<any[]>([]);
@@ -48,6 +53,70 @@ export default function McqGenerator() {
   const [difficulty, setDifficulty] = useState("Medium");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<any | null>(null);
+  const [mcqData,setMcqData] = useState<McqData | null>(null);
+
+  const dummyData = {
+    "id": "68715d847da8ce294c887240",
+    "userId": 2,
+    "questions": [
+        {
+            "question": "Which type of UML diagram best represents the dynamic behavior of a system, showing interactions between actors and use cases?",
+            "options": [
+                "Class Diagram",
+                "Sequence Diagram",
+                "Use Case Diagram",
+                "Deployment Diagram"
+            ],
+            "answer": "Use Case Diagram",
+            "difficulty": "easy"
+        },
+        {
+            "question": "In a Use Case Diagram, what represents the external entities that interact with the system?",
+            "options": [
+                "Use Cases",
+                "Actors",
+                "Classes",
+                "Packages"
+            ],
+            "answer": "Actors",
+            "difficulty": "easy"
+        },
+        {
+            "question": "What is the primary purpose of a Use Case Diagram?",
+            "options": [
+                "To model the static structure of a system",
+                "To show the flow of data within a system",
+                "To represent the dynamic behavior and interactions within a system",
+                "To illustrate the physical deployment of system components"
+            ],
+            "answer": "To represent the dynamic behavior and interactions within a system",
+            "difficulty": "easy"
+        },
+        {
+            "question": "According to the provided text, what is a precondition for using the Animal Adoption App?",
+            "options": [
+                "The user must have an existing animal profile.",
+                "The Rescue Organization must be registered.",
+                "The adopter must be pre-approved.",
+                "The animal must be medically cleared."
+            ],
+            "answer": "The Rescue Organization must be registered.",
+            "difficulty": "easy"
+        },
+        {
+            "question": "In the given Animal Adoption App Use Case example, who are considered the primary actors?",
+            "options": [
+                "Only Potential Adopters",
+                "Rescue Organization and Potential Adopters",
+                "Only Rescue Organization",
+                "Rescue Organization, Rescuers and Potential Adopters"
+            ],
+            "answer": "Rescue Organization, Rescuers and Potential Adopters",
+            "difficulty": "easy"
+        }
+    ],
+    "createdAt": "2025-07-12 00:22:52"
+};
 
   const generateQuestions = (count: number) =>
     Array.from({ length: count }, (_, i) => ({
@@ -63,7 +132,7 @@ export default function McqGenerator() {
     }
   };
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     if (!selectedFile) return;
 
     const uid = Math.random().toString(36).slice(2, 6);
@@ -77,7 +146,32 @@ export default function McqGenerator() {
       questionCount,
       questions,
     };
+      try {
+        const formData = new FormData();
+        formData.append("file", selectedFile as Blob);
+        console.log("FormData:", formData);
+        console.log("Difficulty:", difficulty);
+        console.log("Question Count:", questionCount);
 
+        const response = await apiCall(
+          `${constant.baseUrl}/api/v1/ai/fileToMcqGenerater?difficultyLevel=${difficulty.toLowerCase()}&noOfQuestions=${questionCount}`,
+          "POST",
+          formData,
+          {},
+          true);
+          const data = await response.json();
+        console.log("Response:", data);
+        if (!response.ok) {
+          toast.error("Failed to generate MCQs. Please try again.");
+          return;
+        }
+          toast.success("MCQs generated successfully!");
+          setMcqData(data);
+      } catch (error) {
+        // handle error (optional)
+        toast.error("Error generating MCQs. Please try again.");
+        console.error(error);
+      }
     setFileList((prev) => [...prev, newEntry]);
     setSelectedFile(null);
     setQuestionCount("5");
@@ -182,6 +276,9 @@ export default function McqGenerator() {
           </Button>
 
           <Separator className="my-6" />
+
+          {/* Displaying generated MCQs */}
+          <McqComponent mcqData={mcqData}/>
 
           {/* File List */}
           <Card>
