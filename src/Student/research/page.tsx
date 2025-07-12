@@ -7,6 +7,11 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Mic, SendHorizonal, Trash2 } from "lucide-react"
+import constants from "@/constant/contstant.json"
+import apiCall from "@/lib/apicall"
+import { toast } from "sonner"
+import { convertToMarkdown } from "@/lib/utils"
+import MarkdownPreview from '@uiw/react-markdown-preview'
 
 export default function ResearchAsst() {
   const [query, setQuery] = useState("")
@@ -14,22 +19,29 @@ export default function ResearchAsst() {
   const [loading, setLoading] = useState(false)
   const recognitionRef = useRef<any>(null)
 
-  const handleGenerate = () => {
+  const handleGenerate = async() => {
     if (!query.trim()) return
     setLoading(true)
 
-    setTimeout(() => {
-      setSummary(
-        `📄 Research Summary for: "${query}"
-
-- Introduction and Background
-- Recent Studies and Findings
-- Gaps in Research
-- Recommended Readings
-- Citation Resources`
-      )
-      setLoading(false)
-    }, 1000)
+    const body ={
+      query:query.trim()
+    };
+    try{
+      const response = await apiCall(constants.baseUrl+"/api/v1/ai/researchPaperFinder","POST",body);
+      if (!response.ok) {
+        setLoading(false)
+        toast.error("Failed to generate summary. Please try again.")
+        return
+      } 
+      const data = await response.json();
+      console.log("Response:", data.response);
+      setSummary(convertToMarkdown(data.response));
+    }catch(error:any){
+      console.error("Error generating summary:", error)
+      toast.error("There is some error while generating summary. Please try again.")
+    }finally {
+      setLoading(false);
+    }
   }
 
   const handleVoiceInput = () => {
@@ -79,7 +91,7 @@ export default function ResearchAsst() {
             Enter your research topic to get a summarized overview and key highlights.
           </p>
 
-          <Card className="w-full max-w-3xl shadow-xl">
+          <Card className={`w-full max-w-3xl shadow-xl ${summary?'top-div':''}`}>
             <CardContent className="p-6 space-y-4">
               <div className="flex gap-2 items-center">
                 <Input
@@ -105,10 +117,14 @@ export default function ResearchAsst() {
                   <h2 className="text-lg font-semibold text-primary">
                     Generated Summary
                   </h2>
-                  <Textarea
+                  {/* <Textarea
                     value={summary}
                     readOnly
                     className="bg-muted/40 border-muted text-sm h-60 overflow-y-auto resize-none rounded-md shadow-inner focus-visible:ring-0 focus-visible:ring-offset-0"
+                  /> */}
+                  <MarkdownPreview 
+                    source={summary}
+                    className="bg-muted/40 border-muted text-sm h-60 overflow-y-auto resize-none rounded-md shadow-inner focus-visible:ring-0 focus-visible:ring-offset-0 inner-div"
                   />
                   <div className="flex justify-end">
                     <Button

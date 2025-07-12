@@ -7,6 +7,12 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Mic, SendHorizonal, Trash2 } from "lucide-react"
+import constant from "@/constant/contstant.json"
+import apiCall from "@/lib/apicall"
+import MarkdownPreview from '@uiw/react-markdown-preview'
+import "@/Student/learningpath/style.css"
+import Cookies from "js-cookie"
+import { convertToMarkdown } from "@/lib/utils"
 
 // Extend the Window interface to include SpeechRecognition types
 declare global {
@@ -22,17 +28,27 @@ export default function LearningPath() {
   const [loading, setLoading] = useState(false)
   const recognitionRef = useRef<any>(null)
 
-  const handleGenerate = () => {
+
+
+
+  const handleGenerate = async () => {
     if (!prompt.trim()) return
     setLoading(true)
-
-    // Simulate generation
-    setTimeout(() => {
-      setResponse(
-        `🧠 Here's a learning roadmap for: "${prompt}"\n\n1. Start with basic concepts\n2. Explore core topics\n3. Practice with projects\n4. Take certifications\n5. Apply knowledge in real world`
-      )
-      setLoading(false)
-    }, 1200)
+    const apiUrl = `${constant.baseUrl}/api/v1/ai/learningPath`;
+    const body ={
+      "query": prompt
+    }
+    const headers = {
+      "X-Authorization": Cookies.get("token") || ""
+    }
+    try {
+      let result = await apiCall(apiUrl, "POST", body, headers)
+      setResponse(convertToMarkdown(result.response));
+    } catch (error) {
+      console.error("Error generating learning path:", error)
+      setResponse("Failed to generate learning path. Please try again.")
+    }
+    setLoading(false)
   }
 
   const handleVoiceInput = () => {
@@ -83,7 +99,7 @@ export default function LearningPath() {
             curated steps and resources.
           </p>
 
-          <Card className="w-full max-w-3xl shadow-xl">
+          <Card className={`w-full max-w-3xl shadow-xl ${response?'top-div':''}`} >
             <CardContent className="p-6 space-y-4">
               <div className="flex gap-2 items-center">
                 <Input
@@ -109,18 +125,14 @@ export default function LearningPath() {
                   <h2 className="text-lg font-semibold text-primary">
                     Generated Roadmap
                   </h2>
-                  <Textarea
-                    value={response}
-                    readOnly
-                    className="bg-muted/40 border-muted text-sm h-60 overflow-y-auto resize-none rounded-md shadow-inner focus-visible:ring-0 focus-visible:ring-offset-0"
-                  />
-                  <div className="flex justify-end">
+                    <MarkdownPreview source={response} className="bg-muted/40 border-muted text-sm h-60 overflow-y-auto resize-none rounded-md shadow-inner focus-visible:ring-0 focus-visible:ring-offset-0 inner-div"/>
+                  <div className="flex justify-end mt-1 mb-0">
                     <Button
                       onClick={handleClear}
                       variant="ghost"
                       className="text-destructive hover:bg-destructive/10"
                     >
-                      <Trash2 className="w-4 h-4 mr-1" />
+                      <Trash2 className="w-4 h-2 mr-1" />
                       Clear
                     </Button>
                   </div>

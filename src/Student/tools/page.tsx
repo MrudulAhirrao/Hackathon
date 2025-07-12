@@ -45,8 +45,8 @@ const tools = [
     path: "./tools/allTools/mcqmaker/page",
   },
   {
-    name: "Research Topic Recommender",
-    description: "Find topics for your next paper.",
+    name: "Research Paper Helper",
+    description: "Get assistance with your research papers.",
     icon: <LightbulbIcon className="w-6 h-6 text-indigo-500" />,
     path: "./research/page",
   },
