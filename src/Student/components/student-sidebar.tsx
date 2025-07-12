@@ -23,7 +23,7 @@ const data = {
       url: "#",
       items: [
         {
-          title: "Student Dashboard",
+          title: "Dashboard",
           url: "./dashboard/page",
         },
         {

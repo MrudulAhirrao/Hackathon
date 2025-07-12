@@ -60,13 +60,13 @@ const tools = [
     name: "Conference Finder",
     description: "Search upcoming academic events.",
     icon: <CalendarCheckIcon className="w-6 h-6 text-teal-500" />,
-    path: "/Student/tools/conference-finder",
+    path: "./tools/allTools/conferencefinder/page",
   },
   {
     name: "Online Proctored Tests",
     description: "Take monitored online exams.",
     icon: <ShieldCheckIcon className="w-6 h-6 text-emerald-500" />,
-    path: "/Student/tools/online-proctored-tests",
+    path: "./tools/allTools/onlineproctortest/page",
   },
 ];
 
