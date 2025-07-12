@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from routes import generate # Assuming this is your existing router
 from routes import easychair_scraper # Import the new scraper router
+from routes import generatequestion
 import traceback
 import os # For creating data directory if not exists
 import logging
@@ -41,7 +42,7 @@ async def global_exception_handler(request: Request, exc: Exception):
 # Include both routers
 app.include_router(generate.router)
 app.include_router(easychair_scraper.router) # Include the new EasyChair scraper router
-
+app.include_router(generatequestion.router) # Assuming this is your existing question generation router
 # Health Check Endpoint
 @app.get("/health", summary="Health check endpoint")
 async def health_check():

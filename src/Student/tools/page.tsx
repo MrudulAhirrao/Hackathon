@@ -36,7 +36,7 @@ const tools = [
     name: "Interview Question Generator",
     description: "Get tailored interview questions.",
     icon: <BrainIcon className="w-6 h-6 text-orange-500" />,
-    path: "/Student/tools/interview-question-generator",
+    path: "./tools/allTools/interviewquestion/page",
   },
   {
     name: "MCQ from PDF/Document",

@@ -1,1 +1,1 @@
-declare module "html2pdf.js";
+declare module '@mui/icons-material/BookmarkBorderOutlined';
