@@ -77,7 +77,7 @@ export default function ConferenceFinder() {
         format: format,
       }).toString();
 
-      const apiUrl = `http://localhost:8000/scrape/easychair?${queryParams}`;
+      const apiUrl = `http://13.61.153.223:8000/scrape/easychair?${queryParams}`;
       console.log("Calling Backend API with URL:", apiUrl);
 
       const response = await fetch(apiUrl);

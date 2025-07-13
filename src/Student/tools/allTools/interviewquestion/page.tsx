@@ -18,7 +18,7 @@ export default function InterviewQuestionPage() {
   setGeneratedQuestions([]);
 
   try {
-    const res = await fetch("http://localhost:8000/generate-questions", {
+    const res = await fetch("http://13.61.153.223:8000/generate-questions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

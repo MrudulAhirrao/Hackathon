@@ -141,7 +141,7 @@ const handleGenerate = async () => {
   
   try {
     // Call your backend API instead of using mock data
-    const response = await fetch('http://localhost:8000/generate-paper/', {
+    const response = await fetch('http://13.61.153.223:8000/generate-paper/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
