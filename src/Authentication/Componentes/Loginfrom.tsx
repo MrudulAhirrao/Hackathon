@@ -7,6 +7,7 @@ import Cookies from "js-cookie"
 import { useState } from "react"
 import { toast } from "sonner"
 import apiCall from "@/lib/apicall"
+import { Link } from "react-router-dom"
 
 
 export function LoginForm({
@@ -83,6 +84,13 @@ export function LoginForm({
           Login
         </Button>
         {/* </Link> */}
+
+        <div className="text-center text-sm">
+                Don’t have an account?{" "}
+                <Link to="/register" className="underline">
+                  Register
+                </Link>
+              </div>
       </div>
     </form>
   )

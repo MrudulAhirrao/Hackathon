@@ -23,6 +23,8 @@ import PaperContent from './Student/tools/allTools/aipapercreator/prompt/paper';
 import OnlineProctorTestPage from './Student/tools/allTools/onlineproctortest/page';
 import ConferenceFinder from './Student/tools/allTools/conferencefinder/page';
 import InterviewQuestionPage from './Student/tools/allTools/interviewquestion/page';
+import Registration from './Authentication/RegistrationPage';
+import LoginPage from './Authentication/LoginPage';
 
 function App() {
 
@@ -51,6 +53,8 @@ function App() {
       <Route path="/Student/tools/allTools/conferencefinder/page" element={<ConferenceFinder/>} />
       <Route path="/Student/tools/allTools/interviewquestion/page" element={<InterviewQuestionPage/>} />
       <Route path="/Student/tools/page" element={<ToolsPage/>} />
+      <Route path="/register" element={<Registration />} />
+      <Route path="/login" element={<LoginPage />} />
 
       {/* Add more routes as needed */}
     </Routes>
