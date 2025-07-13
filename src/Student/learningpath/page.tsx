@@ -43,6 +43,9 @@ export default function LearningPath() {
     }
     try {
       let result = await apiCall(apiUrl, "POST", body, headers)
+      result = await result.json();
+      console.log("API Response:", result)
+      // console.log("API JON:", await result.json())
       setResponse(convertToMarkdown(result.response));
     } catch (error) {
       console.error("Error generating learning path:", error)
